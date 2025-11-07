@@ -9,7 +9,7 @@ The system is designed to provide users with clear and personalized information 
 
 ### **Core Components**
 
-*   **Bedrock Agent:** As the central component, this agent processes user requests and acts as the "orchestrator" for the entire process. For the MVP, its knowledge base is populated with hospital price lists and insurance policies for over 15 hospitals in Rhode Island.
+*   **Bedrock Agent:** As the central component, this agent processes user requests and acts as the "orchestrator" for the entire process. It is powered by the **AWS Nova Pro** model, which was selected to balance response speed and quality. For the MVP, its knowledge base is populated with hospital price lists and insurance policies for over 15 hospitals in Rhode Island.
 
 *   **Lambda Management:** To ensure precision and prevent model-generated errors (hallucinations) in critical areas, specific tasks like savings calculations and price comparisons are delegated to an AWS Lambda function. This provides reliable, accurate computations.
 
@@ -21,7 +21,7 @@ The system is designed to provide users with clear and personalized information 
 
 The system employs a modern, scalable architecture:
 
-1.  **Frontend (Next.js):** A user-facing web application that serves as the primary interface for users to submit their queries.
+1.  **Frontend (Next.js):** A user-facing web application built with Next.js serves as the primary interface. The chat-style user interface is implemented using **assistantUI** components.
 
 2.  **Bedrock:** The core agent that receives requests from the frontend. It interprets the user's needs and coordinates with the knowledge base and Lambda functions to formulate a response.
 
