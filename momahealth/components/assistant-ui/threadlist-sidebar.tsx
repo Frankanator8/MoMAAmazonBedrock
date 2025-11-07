@@ -33,7 +33,7 @@ export function ThreadListSidebar({
                   </div>
                   <div className="aui-sidebar-header-heading mr-6 flex flex-col gap-0.5 leading-none">
                     <span className="aui-sidebar-header-title font-semibold">
-                      assistant-ui
+                      TransparaFetch
                     </span>
                   </div>
                 </Link>
@@ -54,7 +54,7 @@ export function ThreadListSidebar({
                 href="https://github.com/assistant-ui/assistant-ui"
                 target="_blank"
               >
-                <div className="aui-sidebar-footer-icon-wrapper flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                {/* <div className="aui-sidebar-footer-icon-wrapper flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Github className="aui-sidebar-footer-icon size-4" />
                 </div>
                 <div className="aui-sidebar-footer-heading flex flex-col gap-0.5 leading-none">
@@ -62,7 +62,7 @@ export function ThreadListSidebar({
                     GitHub
                   </span>
                   <span>View Source</span>
-                </div>
+                </div> */}
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
