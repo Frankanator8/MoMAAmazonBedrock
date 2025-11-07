@@ -1,6 +1,9 @@
 "use client";
 
-import { AssistantRuntimeProvider } from "@assistant-ui/react";
+import { AssistantRuntimeProvider, WebSpeechSynthesisAdapter, AttachmentAdapter,
+  PendingAttachment,
+  CompleteAttachment,
+ } from "@assistant-ui/react";
 import {
   useChatRuntime,
   AssistantChatTransport,
@@ -22,11 +25,86 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
+class PDFAttachmentAdapter implements AttachmentAdapter {
+  accept = "application/pdf";
+
+  async add({ file }: { file: File }): Promise<PendingAttachment> {
+    // Validate file size
+    const maxSize = 10 * 1024 * 1024; // 10MB limit
+    if (file.size > maxSize) {
+      throw new Error("PDF size exceeds 10MB limit");
+    }
+
+    return {
+      id: crypto.randomUUID(),
+      type: "document",
+      name: file.name,
+      file,
+      contentType: file.type,
+      status: {
+        type: "running",
+        reason: "uploading",
+        progress: 0,
+      },
+    };
+  }
+
+  async send(attachment: PendingAttachment): Promise<CompleteAttachment> {
+    // Option 1: Extract text from PDF (requires pdf parsing library)
+    // const text = await this.extractTextFromPDF(attachment.file);
+
+    // Option 2: Convert to base64 for API processing
+    const base64Data = await this.fileToBase64(attachment.file);
+
+    return {
+      id: attachment.id,
+      type: "document",
+      name: attachment.name,
+      content: [
+        {
+          type: "text",
+          text: `[PDF Document: ${attachment.name}]\nBase64 data: ${base64Data}`,
+        },
+      ],
+      contentType: attachment.contentType,
+      status: {
+        type: "complete",
+      },
+    };
+  }
+
+  async remove(attachment: PendingAttachment): Promise<void> {
+    // Cleanup if needed
+  }
+
+  private async fileToBase64(file: File): Promise<string> {
+    const arrayBuffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(arrayBuffer);
+    let binary = "";
+    bytes.forEach((byte) => {
+      binary += String.fromCharCode(byte);
+    });
+    return btoa(binary);
+  }
+
+  // Optional: Extract text from PDF using a library like pdf.js
+  private async extractTextFromPDF(file: File): Promise<string> {
+    // Implementation would use pdf.js or similar
+    // This is a placeholder
+    return "Extracted PDF text content";
+  }
+}
+
+// https://www.assistant-ui.com/docs/guides/Attachments#creating-custom-attachment-adapters
+// https://www.assistant-ui.com/docs/guides/Speech
 export const Assistant = () => {
   const runtime = useChatRuntime({
     transport: new AssistantChatTransport({
       api: "/api/chat",
     }),
+    adapters: {
+      attachments: new PDFAttachmentAdapter(),
+    },
   });
 
   return (

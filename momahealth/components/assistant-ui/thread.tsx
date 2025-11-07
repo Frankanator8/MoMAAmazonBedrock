@@ -17,6 +17,11 @@ import {
   ErrorPrimitive,
   MessagePrimitive,
   ThreadPrimitive,
+  SimpleImageAttachmentAdapter,
+  SimpleTextAttachmentAdapter,
+  AttachmentAdapter,
+  PendingAttachment,
+  CompleteAttachment, 
 } from "@assistant-ui/react";
 
 import type { FC } from "react";
